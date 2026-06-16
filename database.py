@@ -1,3 +1,6 @@
+import email
+import re
+
 import firebase_admin #this is the library for firebase so we can connect to the eventual site
 
 from firebase_admin import credentials, firestore #credentials and frestore modules
@@ -126,3 +129,7 @@ def seed_data(db):
         "tags": ["Python", "Career"]
     })
     print('Seeded :D')
+
+    def valid_email(email):
+        """Check if the email is valid."""
+    return re.match(r"[^@]+@[^@]+\.[^@]+", email)
