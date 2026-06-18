@@ -1,6 +1,6 @@
 
 import re
-from streamlit import st
+import streamlit as st
 
 import firebase_admin #this is the library for firebase so we can connect to the eventual site
 
