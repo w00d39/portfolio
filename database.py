@@ -1,5 +1,6 @@
 
 import re
+from streamlit import st
 
 import firebase_admin #this is the library for firebase so we can connect to the eventual site
 
@@ -7,13 +8,26 @@ from firebase_admin import credentials, firestore #credentials and frestore modu
 
 def get_db():
     """
-    This will init the firebase connection and then return the firestore clinet 
+    This will init the firebase connection and then return the firestore clinet but now works with streamlit cloud as the dlpyer
+
     """
-    if not firebase_admin._apps: #this checks if the app is already inited
-        cred = credentials.Certificate("firebase_credentials.json") #loads the json secrets to Credentils
-        firebase_admin.initialize_app(cred) #loads the credentials and then inits the app
-    #returns the firestore client with the initialized app either newly or existing
+    if not firebase_admin._apps:
+        cred = credentials.Certificate({
+            "type": st.secrets["firebase"]["type"],
+            "project_id": st.secrets["firebase"]["project_id"],
+            "private_key_id": st.secrets["firebase"]["private_key_id"],
+            "private_key": st.secrets["firebase"]["private_key"],
+            "client_email": st.secrets["firebase"]["client_email"],
+            "client_id": st.secrets["firebase"]["client_id"],
+            "auth_uri": st.secrets["firebase"]["auth_uri"],
+            "token_uri": st.secrets["firebase"]["token_uri"],
+            "auth_provider_x509_cert_url": st.secrets["firebase"]["auth_provider_x509_cert_url"],
+            "client_x509_cert_url": st.secrets["firebase"]["client_x509_cert_url"]
+        })
+        firebase_admin.initialize_app(cred)
     return firestore.client()
+
+
 
 def seed_data(db):
     """
