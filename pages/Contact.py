@@ -21,6 +21,18 @@ if "last_submission" not in st.session_state:
 
 st.title("Contact")
 
+st.markdown("""
+<p style="font-family: Space Mono, monospace; font-size: 10px; color: #888; letter-spacing: 2px;">
+    // drop me a line
+</p>
+<p style="font-family: DM Serif Display, serif; font-size: 18px; color: #444; line-height: 1.8; max-width: 540px;">
+    I'm currently looking for opportunities in machine learning and data engineering. 
+    Whether you have a role, a project, or just want to talk tech — I'd love to hear from you.
+</p>
+""", unsafe_allow_html=True)
+
+st.divider()
+
 name = html.escape(st.text_input("Name"))
 email = html.escape(st.text_input("Email"))
 message = html.escape(st.text_area("Message"))

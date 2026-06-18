@@ -23,15 +23,34 @@ for doc in experience: #looping through each experience and making a container f
     skills = [ref.get().to_dict() for ref in exp["skills_used"]] #getting the skill details for each skill used
 
     with st.container(border = True): #container for each experience
-        st.subheader(exp["role"]) #role of the experience
-        st.caption(f"{exp['company']} · {exp['start']} - {exp['end']}") #dates i was there
+        col1, col2 = st.columns([3, 1]) #splits page into 1/3 and 2/3 layout
+       
+        with col1:
+            st.markdown(f"""
+             <p style="font-family: Space Mono, monospace; font-size: 9px; color: #C0392B; letter-spacing: 3px; margin: 0;">
+                // {exp['company'].lower()}
+            </p>
+            <p style="font-family: DM Serif Display, serif; font-size: 22px; color: #0D0D0D; margin: 4px 0 2px;">
+                {exp['role']}
+            </p>
+            """, unsafe_allow_html=True)
 
-        for bullet in exp["bullets"]: #ye old bullet points
-            st.write(f"• {bullet}")
+        with col2:
+            st.markdown(f"""
+            <p style="font-family: Space Mono, monospace; font-size: 9px; color: #888; text-align: right; margin-top: 8px;">
+                {exp['start']} — {exp['end']}
+            </p>
+            """, unsafe_allow_html=True)
 
-        #skill badges :)
-        badges = " ".join([ #joining the skill badges into a single string
-            f'<span style="background-color:{s["color"]}; padding: 4px 10px; border-radius: 12px; color: white; margin: 2px">{s["name"]}</span>'
-            for s in skills #for each skill it loops through and creates a badge
+        for bullet in exp["bullets"]:
+            st.markdown(f"""
+            <p style="font-family: DM Serif Display, serif; font-size: 14px; color: #444; line-height: 1.8; margin: 4px 0;">
+                — {bullet}
+            </p>
+            """, unsafe_allow_html=True)
+
+        badges = " ".join([
+            f'<span style="font-family: Space Mono, monospace; font-size: 9px; padding: 3px 10px; border: 0.5px solid #0D0D0D33; color: #0D0D0D; margin: 2px; display: inline-block; border-radius: 2px;">{s["name"]}</span>'
+            for s in skills
         ])
-        st.markdown(badges, unsafe_allow_html=True)
+        st.markdown(f'<div style="margin: 8px 0;">{badges}</div>', unsafe_allow_html=True)

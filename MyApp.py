@@ -5,6 +5,9 @@ import streamlit as st
 #custom module to get the db connection
 import database
 
+#setting up the page configuration
+st.set_page_config(page_title = "Sarah Wood", page_icon="▶", layout = "wide")
+
 st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=DM+Serif+Display:ital@0;1&display=swap');
@@ -66,31 +69,62 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-#setting up the page configuration
-st.set_page_config(page_title = "Portfolio", layout = "wide")
-st.title("Portfolio")
+st.title("Home")
 
 try:
     db = database.get_db() #firestore connection from database module
-    #st.success("Connected to Firestore")
-    #database.seed_data(db)
+   
+   
     #about calls the about collection document("main") is pointing to the main in about
     #.get fires the request and to dict makes the collection into a plain ol dict
     about = db.collection("about").document("main").get().to_dict()
 
 
     #Lay of the land
-    col1, col2 = st.columns([1, 2]) #splits page into 1/3 and 2/3 layout
+    col1, col2 = st.columns([2, 1]) #splits page into 1/3 and 2/3 layout
 
-    #with col1:
+    with col1:
         #st.image(about["photo_url"], width = 250)
+        st.markdown("// data engineer · ml · ai", unsafe_allow_html=False)
+        st.title("Sarah *Wood*")
+        st.markdown("""
+        <p style="font-family: 'DM Serif Display', serif; font-size: 22px; color: #0D0D0D; line-height: 1.6;">
+        I build AI that makes sense to humans.<br>The hard problems are the most exciting ones.
+        </p>
+        """, unsafe_allow_html=True)
+        
+        st.markdown(f"""
+        <div style="margin-top: 1.5rem; display: flex; gap: 16px;">
+            <a href="{about['linkedin']}" target="_blank" style="font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 2px; color: #C0392B; text-decoration: none;">// LinkedIn</a>
+            <a href="{about['github']}" target="_blank" style="font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 2px; color: #C0392B; text-decoration: none;">// GitHub</a>
+        </div>
+        """, unsafe_allow_html=True)
+
 
     with col2:
-        st.title(about["name"])
-        st.subheader(about["title"])
-        st.write(about["bio"])
-        st.markdown(f" {about['email']}")
-        st.markdown(f"[LinkedIn]({about['linkedin']}) · [GitHub]({about['github']})")
+        st.image(about["photo_url"], width=280)
+
+
+    st.divider()
+
+        # Ticker
+    st.markdown("""
+    <div style="font-family: 'Space Mono', monospace; font-size: 10px; color: #C0392B; letter-spacing: 3px; display: flex; gap: 24px; flex-wrap: wrap;">
+        <span>▶ PYTHON</span><span>▶ MACHINE LEARNING</span><span>▶ HUMAN-IN-THE-LOOP</span><span>▶ EXPLAINABILITY</span><span>▶ STREAMLIT</span><span>▶ FIRESTORE</span>
+    </div>
+    """, unsafe_allow_html=True)
+
+    st.divider()
+
+    # Bio
+    st.header("about")
+    st.markdown(f"""
+    <p style="font-family: 'DM Serif Display', serif; font-size: 18px; line-height: 1.9; max-width: 680px;">
+    {about['bio']}
+    </p>
+    """, unsafe_allow_html=True)
+
+
 except Exception as e:
     st.error(f"Error connecting to Firestore: {e}")
 
